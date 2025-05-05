@@ -8,9 +8,7 @@ set(BEMAN_NULLABLE_LIBRARY "beman::nullable")
 include(GNUInstallDirs)
 
 # List of all buildable examples.
-set(EXAMPLES
-main
-)
+set(EXAMPLES main)
 
 foreach(example ${EXAMPLES})
     # Add example executable.

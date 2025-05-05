@@ -4,10 +4,7 @@
 #define INCLUDED_BEMAN_NULLABLE_NULLABLE
 
 namespace beman {
-namespace nullable {
-
-
-}
-}
+namespace nullable {}
+} // namespace beman
 
 #endif

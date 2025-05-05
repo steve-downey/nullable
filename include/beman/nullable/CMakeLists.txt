@@ -3,11 +3,7 @@
 
 target_sources(
     beman_nullable
-    PUBLIC
-        FILE_SET beman_nullable_headers
-        TYPE HEADERS
-        FILES
-            nullable.hpp
+    PUBLIC FILE_SET beman_nullable_headers TYPE HEADERS FILES nullable.hpp
 )
 
 install(
