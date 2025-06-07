@@ -5,7 +5,6 @@
 # cmake-format: on
 
 INSTALL_PREFIX?=.install/
-PROJECT?=$(shell basename $(CURDIR))
 BUILD_DIR?=.build
 DEST?=$(INSTALL_PREFIX)
 CMAKE_FLAGS?=
@@ -62,8 +61,10 @@ $(_build_path)/CMakeCache.txt: | $(_build_path) .gitmodules
 
 TARGET:=all
 compile: $(_build_path)/CMakeCache.txt ## Compile the project
-	cmake --build $(_build_path)  --config $(CONFIG) --target all_verify_interface_header_sets -- -k 0
 	cmake --build $(_build_path)  --config $(CONFIG) --target all -- -k 0
+
+compile-headers: $(_build_path)/CMakeCache.txt ## Compile the headers
+	 cmake --build $(_build_path)  --config $(CONFIG) --target all_verify_interface_header_sets -- -k 0
 
 install: $(_build_path)/CMakeCache.txt compile ## Install the project
 	cmake --install $(_build_path) --config $(CONFIG) --component beman_nullable_development --verbose
@@ -98,7 +99,7 @@ papers:
 	cmake --build $(_build_path)  --config $(CONFIG) --target $@ -- -k 0
 
 PYEXECPATH ?= $(shell which python3.12 || which python3.11 || which python3.10 || which python3.9 || which python3.8 || which python3.7 || which python3)
-PYTHON ?= $(shell basename $(PYEXECPATH))
+PYTHON ?= $(notdir $(PYEXECPATH))
 VENV := .venv
 ACTIVATE := . $(VENV)/bin/activate &&
 PYEXEC := $(ACTIVATE) $(PYTHON)
@@ -128,10 +129,10 @@ show-venv: ## Debugging target - show venv details
 	$(PIP) --version
 	@echo venv: $(VENV)
 
-requirements.txt: requirements.in
+requirements.txt: requirements.in | $(VENV)
 	$(PIPTOOLS_COMPILE) --output-file=$@ $<
 
-requirements-dev.txt: requirements-dev.in
+requirements-dev.txt: requirements-dev.in | $(VENV)
 	$(PIPTOOLS_COMPILE) --output-file=$@ $<
 
 $(VENV):
@@ -166,10 +167,14 @@ lint-manual: ## Run all manual tools in pre-commit
 
 .PHONY: coverage
 coverage: ## Build and run the tests with the GCOV profile and process the results
-coverage: venv
+coverage: venv $(_build_path)/CMakeCache.txt
 	$(ACTIVATE) cmake --build $(_build_path) --config Gcov
 	$(ACTIVATE) ctest --build-config Gcov --output-on-failure --test-dir $(_build_path)
 	$(ACTIVATE) cmake --build $(_build_path) --config Gcov --target process_coverage
+
+.PHONY: view-coverage
+view-coverage: ## View the coverage report
+	sensible-browser $(_build_path)/coverage/coverage.html
 
 # Help target
 .PHONY: help
