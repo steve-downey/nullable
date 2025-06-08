@@ -46,7 +46,7 @@ repos:
             papers/.*
           )$
 
-  - repo: https://github.com/jackdewinter/pymarkdown
-    rev: v0.9.30
-    hooks:
-      - id: pymarkdown
+  # - repo: https://github.com/jackdewinter/pymarkdown
+  #   rev: v0.9.30
+  #   hooks:
+  #     - id: pymarkdown
