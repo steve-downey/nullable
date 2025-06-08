@@ -7,4 +7,6 @@
 
 #include <gtest/gtest.h>
 
-TEST(NullableTest, Breathing) { SUCCEED(); }
+TEST(NullableTest, Breathing) {
+    // FAIL();
+}
