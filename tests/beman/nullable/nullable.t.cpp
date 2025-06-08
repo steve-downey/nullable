@@ -8,5 +8,5 @@
 #include <gtest/gtest.h>
 
 TEST(NullableTest, Breathing) {
-    // FAIL();
+    SUCCEED();
 }
