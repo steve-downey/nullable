@@ -100,12 +100,12 @@ jobs:
         run: |
           set -x
           cmake --build .build --config Gcov --target process_coverage -- -k 0
-      - name: Coveralls
-        if: matrix.config.coverage
-        uses: coverallsapp/github-action@main
-        with:
-          file: .build/coverage.json
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Coveralls
+      #   if: matrix.config.coverage
+      #   uses: coverallsapp/github-action@main
+      #   with:
+      #     file: .build/coverage.json
+      #     github-token: ${{ secrets.GITHUB_TOKEN }}
 
   create-issue-when-fault:
     runs-on: ubuntu-latest
